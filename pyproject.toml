@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "folnlp"
+version = "0.1.0"
+description = "Translate between natural language statements and first-order logic formulas."
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{ name = "FOL NLP" }]
+keywords = ["first-order logic", "natural language", "nlp"]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Science/Research",
+    "Topic :: Text Processing :: Linguistic",
+]
+dependencies = ["flask>=2.3"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
