@@ -265,270 +265,472 @@ _INDEX_HTML = """<!DOCTYPE html>
   <style>
     :root {
       color-scheme: light;
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(160deg, #e0f2fe 0%, #eef2ff 40%, #ede9fe 100%);
-      color: #111827;
+      font-family: 'Nunito', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: #d9f9c6;
+      color: #0f172a;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
     }
     body {
       margin: 0;
-      padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 5vw, 3rem) 4rem;
+      min-height: 100vh;
+      background: radial-gradient(circle at top left, #fafff0 0%, #d8fadb 40%, #c7e8ff 100%);
       display: flex;
       justify-content: center;
+      padding: clamp(1.5rem, 4vw, 3.5rem) clamp(0.8rem, 3vw, 2.5rem);
     }
-    .app {
-      width: min(960px, 100%);
-      display: grid;
-      gap: clamp(1.5rem, 3vw, 2.5rem);
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+      z-index: 0;
+      pointer-events: none;
     }
-    .card {
-      background: #ffffff;
-      border-radius: 1.1rem;
-      box-shadow: 0 22px 60px -32px rgba(79, 70, 229, 0.35);
-      padding: clamp(1.4rem, 3vw, 2.2rem);
-      display: grid;
-      gap: 1.25rem;
+    body::before {
+      top: -140px;
+      left: -120px;
     }
-    .hero {
-      display: grid;
-      gap: 0.6rem;
-      text-align: left;
+    body::after {
+      bottom: -180px;
+      right: -100px;
     }
-    .hero h1 {
-      margin: 0;
-      font-size: clamp(1.9rem, 5vw, 2.85rem);
-      font-weight: 700;
-      color: #312e81;
+    .app-shell {
+      width: min(1080px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1.2rem, 3vw, 2.5rem);
+      position: relative;
+      z-index: 1;
     }
-    .hero p {
-      margin: 0;
-      color: #4338ca;
-      font-weight: 500;
+    .hero-card {
+      background: linear-gradient(140deg, #ffffff 0%, #edffe1 80%);
+      border-radius: 28px;
+      border: 2px solid rgba(88, 204, 2, 0.2);
+      box-shadow: 0 30px 85px -45px rgba(21, 94, 7, 0.4);
+      padding: clamp(1.2rem, 4vw, 2.6rem);
+      display: flex;
+      align-items: center;
+      gap: clamp(1rem, 3vw, 2.5rem);
+      flex-wrap: wrap;
     }
-    .muted {
-      color: #6b7280;
-      font-size: 0.95rem;
-    }
-    .muted.small {
-      font-size: 0.85rem;
-    }
-    .badge {
-      display: inline-flex;
+    .hero-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 32px;
+      background: #58cc02;
+      color: #ffffff;
+      display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0.35rem 0.9rem;
-      border-radius: 999px;
-      background: #e0e7ff;
-      color: #312e81;
-      font-weight: 600;
-      font-size: 0.85rem;
+      font-size: clamp(3.5rem, 6vw, 4.5rem);
+      box-shadow: 0 25px 50px -25px rgba(88, 204, 2, 0.7);
     }
-    .toggle {
-      display: inline-flex;
-      padding: 0.4rem;
+    .hero-copy {
+      flex: 1 1 260px;
+      min-width: 240px;
+    }
+    .hero-copy h1 {
+      margin: 0 0 0.45rem;
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      color: #0b4213;
+    }
+    .hero-copy p {
+      margin: 0;
+      color: #1e3a34;
+      font-weight: 600;
+    }
+    .eyebrow {
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      color: #3fb10c;
+      margin-bottom: 0.25rem;
+      font-weight: 700;
+    }
+    .progress-track {
+      margin-top: 1.1rem;
+      height: 12px;
       border-radius: 999px;
-      background: #e0e7ff;
+      background: rgba(15, 23, 42, 0.1);
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-fill {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, #ffd929, #ff9d0a);
+      border-radius: inherit;
+    }
+    .progress-caption {
+      display: block;
+      margin-top: 0.35rem;
+      font-size: 0.9rem;
+      color: #475467;
+      font-weight: 600;
+    }
+    .hero-stats {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex: 1 0 220px;
+      gap: 0.85rem;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .hero-stats li {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 18px;
+      padding: 0.9rem 1.1rem;
+      min-width: 140px;
+      flex: 1 1 140px;
+      border: 1px solid rgba(10, 92, 24, 0.08);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    .hero-stats .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #64748b;
+      font-weight: 700;
+    }
+    .hero-stats .stat-value {
+      display: block;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #076014;
+      margin: 0.2rem 0;
+    }
+    .hero-stats small {
+      color: #64748b;
+      font-weight: 600;
+    }
+    .panel {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 26px;
+      padding: clamp(1.2rem, 3vw, 2rem);
+      box-shadow: 0 20px 65px -50px rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(15, 23, 42, 0.05);
+    }
+    .practice-panel {
+      display: grid;
+      gap: 0.9rem;
+    }
+    .practice-panel h2 {
+      margin: 0;
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+    }
+    .helper-text {
+      margin: 0;
+      color: #4b5563;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .mode-toggle {
+      display: inline-flex;
       gap: 0.35rem;
-      align-items: center;
+      padding: 0.35rem;
+      background: rgba(245, 255, 232, 0.7);
+      border-radius: 999px;
+      border: 1px solid rgba(63, 177, 12, 0.2);
       width: fit-content;
     }
-    .toggle button {
-      flex: 1 1 auto;
-      padding: 0.55rem 1.2rem;
-      border-radius: 999px;
+    .mode-toggle button {
       border: none;
+      border-radius: 999px;
+      padding: 0.65rem 1.55rem;
       background: transparent;
-      color: #312e81;
-      font-weight: 600;
+      color: #106b1e;
+      font-weight: 700;
+      font-size: 0.95rem;
       cursor: pointer;
       transition: background 140ms ease, color 140ms ease, box-shadow 140ms ease;
     }
-    .toggle button.active {
-      background: #312e81;
+    .mode-toggle button.active {
+      background: linear-gradient(120deg, #58cc02, #4cba00);
       color: #ffffff;
-      box-shadow: 0 10px 20px -16px rgba(49, 46, 129, 0.6);
+      box-shadow: 0 12px 25px -18px rgba(26, 86, 18, 0.7);
+    }
+    .mode-toggle button:focus-visible {
+      outline: 2px solid #ffd929;
+      outline-offset: 2px;
+    }
+    .challenge-panel {
+      display: grid;
+      gap: 1rem;
+    }
+    .challenge-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .mode-pill {
+      padding: 0.55rem 1.45rem;
+      border-radius: 999px;
+      background: rgba(15, 118, 110, 0.08);
+      color: #0f766e;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .challenge-meta {
+      display: flex;
+      gap: 0.9rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .ghost-link {
+      border: none;
+      background: transparent;
+      font-weight: 700;
+      color: #0ea5e9;
+      cursor: pointer;
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      transition: background 140ms ease;
+    }
+    .ghost-link:hover {
+      background: rgba(14, 165, 233, 0.12);
+    }
+    .ghost-link:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
     .prompt-card {
-      background: #eef2ff;
-      border: 1px solid #c7d2fe;
-      border-radius: 1rem;
-      padding: clamp(1rem, 2vw, 1.35rem);
-      display: grid;
-      gap: 0.55rem;
+      background: linear-gradient(120deg, rgba(14, 165, 233, 0.08), rgba(72, 187, 120, 0.1));
+      border-radius: 1.5rem;
+      padding: 1rem 1.2rem;
+      border: 1px solid rgba(14, 165, 233, 0.15);
     }
     .prompt-label {
-      text-transform: uppercase;
+      display: block;
       font-size: 0.75rem;
+      text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #4338ca;
+      color: #0f766e;
       font-weight: 700;
+      margin-bottom: 0.4rem;
     }
     .prompt-card p {
       margin: 0;
-      font-size: clamp(1.05rem, 2.6vw, 1.3rem);
-      font-weight: 600;
-      color: #1f2937;
-      word-break: break-word;
+      font-size: clamp(1.1rem, 2.6vw, 1.45rem);
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .answer-stack {
+      display: grid;
+      gap: 0.6rem;
     }
     .answer-area {
-      min-height: 92px;
+      min-height: 100px;
+      border-radius: 1.3rem;
+      border: 2px dashed rgba(15, 23, 42, 0.15);
+      padding: 0.9rem;
       display: flex;
       flex-wrap: wrap;
-      gap: 0.6rem;
-      border: 2px dashed #d1d5db;
-      border-radius: 1rem;
-      padding: 0.9rem;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.9);
       position: relative;
-      background: #ffffff;
     }
-    .answer-area[data-empty=\"true\"]::before {
+    .answer-area[data-empty="true"]::before {
       content: attr(data-placeholder);
-      color: #9ca3af;
-      font-size: 0.95rem;
       position: absolute;
       left: 1rem;
       top: 1rem;
+      color: #9ca3af;
+      font-size: 0.95rem;
       pointer-events: none;
     }
     .block-pool {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.6rem;
+      gap: 0.5rem;
+      min-height: 70px;
     }
     .block-button {
-      padding: 0.6rem 1.15rem;
-      border-radius: 999px;
-      font-weight: 600;
       border: none;
+      border-radius: 30px;
+      padding: 0.55rem 1.3rem;
+      font-weight: 700;
+      font-size: 1rem;
       cursor: pointer;
-      transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
+      transition: transform 140ms ease, box-shadow 140ms ease;
     }
     .block-button.available {
-      background: #e0e7ff;
-      color: #312e81;
+      background: #fff4d6;
+      color: #a45c00;
+      box-shadow: 0 10px 20px -12px rgba(244, 158, 43, 0.7);
     }
     .block-button.available:hover {
       transform: translateY(-1px);
-      box-shadow: 0 12px 28px -24px rgba(79, 70, 229, 0.7);
-      background: #c7d2fe;
     }
     .block-button.selected {
-      background: #4f46e5;
+      background: #58cc02;
       color: #ffffff;
+      box-shadow: 0 10px 25px -15px rgba(88, 204, 2, 0.8);
+    }
+    .muted {
+      color: #4b5563;
+    }
+    .small {
+      font-size: 0.85rem;
+    }
+    .muted.small {
+      color: #6b7280;
     }
     .actions {
       display: flex;
-      gap: 0.8rem;
+      gap: 0.75rem;
       flex-wrap: wrap;
     }
     button.action {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: 999px;
-      padding: 0.75rem 1.9rem;
       border: none;
+      border-radius: 999px;
+      padding: 0.85rem 2rem;
+      font-size: 1.05rem;
+      font-weight: 700;
       cursor: pointer;
-      transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
+      transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
     }
     button.action.primary {
-      background: #34d399;
-      color: #064e3b;
-      box-shadow: 0 18px 36px -24px rgba(52, 211, 153, 0.6);
+      background: linear-gradient(120deg, #58cc02, #4cb000);
+      color: #08330d;
+      box-shadow: 0 20px 35px -25px rgba(88, 204, 2, 0.9);
     }
     button.action.secondary {
-      background: #e0e7ff;
-      color: #312e81;
-    }
-    button.action.ghost {
-      background: transparent;
-      color: #4338ca;
-      border: 1px dashed rgba(99, 102, 241, 0.45);
+      background: linear-gradient(120deg, #ffd929, #ffb500);
+      color: #723b00;
+      box-shadow: 0 18px 30px -24px rgba(255, 160, 0, 0.7);
     }
     button.action:disabled {
-      opacity: 0.55;
+      opacity: 0.6;
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
     }
     button.action:not(:disabled):hover {
       transform: translateY(-1px);
-      box-shadow: 0 18px 38px -30px rgba(59, 130, 246, 0.85);
+    }
+    .feedback-stack {
+      display: grid;
+      gap: 0.6rem;
     }
     .feedback {
-      min-height: 2.75rem;
-      border-radius: 0.95rem;
-      padding: 0.9rem 1.1rem;
+      min-height: 2.5rem;
+      border-radius: 1rem;
+      padding: 0.85rem 1rem;
       font-size: 0.95rem;
-      line-height: 1.45;
-      display: flex;
-      align-items: center;
-      word-break: break-word;
+      font-weight: 600;
+      color: #0f172a;
+      background: rgba(15, 23, 42, 0.04);
+      border: 1px solid transparent;
     }
     .feedback.success {
       background: #ecfdf5;
-      border: 1px solid #bbf7d0;
-      color: #166534;
+      border-color: #a7f3d0;
+      color: #065f46;
     }
     .feedback.error {
       background: #fef2f2;
-      border: 1px solid #fecaca;
+      border-color: #fecaca;
       color: #b91c1c;
     }
     .feedback.info {
       background: #eff6ff;
-      border: 1px solid #bfdbfe;
+      border-color: #bfdbfe;
       color: #1e3a8a;
     }
-    @media (max-width: 768px) {
+    @media (max-width: 720px) {
       body {
-        padding: 1.75rem 1rem 3.5rem;
+        padding: 1.2rem 0.85rem 2rem;
       }
-      .actions {
-        justify-content: stretch;
+      .hero-card {
+        padding: 1.5rem;
       }
-      button.action {
-        width: 100%;
+      .hero-stats {
+        flex-direction: column;
+      }
+      .actions button {
+        flex: 1 1 100%;
       }
     }
   </style>
 </head>
 <body>
-  <div class=\"app\">
-    <header class=\"hero\">
-      <h1>Block Translation Challenge</h1>
-      <p>Choose a mode, assemble the tiles, and check your first-order logic instincts.</p>
+  <div class="app-shell">
+    <header class="hero-card">
+      <div class="hero-avatar" aria-hidden="true">🤖</div>
+      <div class="hero-copy">
+        <p class="eyebrow">Logic League</p>
+        <h1>Semantic Logic Quest</h1>
+        <p>Stack the translation tiles to earn XP and keep your streak alive.</p>
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="50" aria-valuenow="34">
+          <span class="progress-fill" style="width: 68%;"></span>
+        </div>
+        <span class="progress-caption">Daily goal · 34 / 50 XP</span>
+      </div>
+      <ul class="hero-stats">
+        <li>
+          <span class="stat-label">Hearts</span>
+          <span class="stat-value">❤️ ❤️ ❤️ ❤️</span>
+          <small>Don't lose them!</small>
+        </li>
+        <li>
+          <span class="stat-label">Streak</span>
+          <span class="stat-value">🔥 8</span>
+          <small>Days in a row</small>
+        </li>
+        <li>
+          <span class="stat-label">XP Boost</span>
+          <span class="stat-value">2×</span>
+          <small>Active 13 min</small>
+        </li>
+      </ul>
     </header>
 
-    <section class=\"card\">
-      <span class=\"muted\">Practice mode</span>
-      <div class=\"toggle\" role=\"group\" aria-label=\"Select practice mode\">
-        <button id=\"mode-nl2fol\" aria-pressed=\"false\">NL → FOL</button>
-        <button id=\"mode-fol2nl\" aria-pressed=\"false\">FOL → NL</button>
-        <button id=\"mode-mixed\" class=\"active\" aria-pressed=\"true\">Mixed</button>
+    <section class="panel practice-panel">
+      <div>
+        <p class="eyebrow muted">Practice mode</p>
+        <h2>Pick your course</h2>
+        <p class="muted">Switch between natural-language drills, logic formulas, or mix things up for surprise rounds.</p>
       </div>
-      <p class=\"muted small\">Mixed mode alternates randomly between natural-language prompts and logical formulas.</p>
+      <div class="mode-toggle" role="group" aria-label="Select practice mode">
+        <button id="mode-nl2fol" type="button" aria-pressed="false">NL → FOL</button>
+        <button id="mode-fol2nl" type="button" aria-pressed="false">FOL → NL</button>
+        <button id="mode-mixed" type="button" class="active" aria-pressed="true">Mixed</button>
+      </div>
+      <p class="helper-text">Mixed keeps you guessing—perfect for streak-safe review.</p>
     </section>
 
-    <section class=\"card\" id=\"challenge-card\">
-      <div style=\"display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;\">
-        <span id=\"challenge-mode\" class=\"badge\">NL → FOL</span>
-        <span id=\"challenge-instructions\" class=\"muted\"></span>
+    <section class="panel challenge-panel" id="challenge-card">
+      <div class="challenge-header">
+        <div id="challenge-mode" class="mode-pill">NL → FOL</div>
+        <div class="challenge-meta">
+          <span id="challenge-instructions" class="muted"></span>
+          <button id="challenge-new" type="button" class="ghost-link">New challenge</button>
+        </div>
       </div>
-      <div class=\"prompt-card\">
-        <span class=\"prompt-label\">Prompt</span>
-        <p id=\"challenge-prompt\"></p>
+      <div class="prompt-card">
+        <span class="prompt-label">Prompt</span>
+        <p id="challenge-prompt"></p>
       </div>
-      <div id=\"challenge-answer\" class=\"answer-area\" data-empty=\"true\" data-placeholder=\"Tap blocks to start building your answer.\"></div>
-      <div id=\"challenge-pool\" class=\"block-pool\"></div>
-      <div class=\"actions\">
-        <button id=\"challenge-check\" class=\"action primary\">Check answer</button>
-        <button id=\"challenge-clear\" class=\"action secondary\">Clear</button>
-        <button id=\"challenge-new\" class=\"action ghost\">New challenge</button>
+      <div class="answer-stack">
+        <div id="challenge-answer" class="answer-area" data-empty="true" data-placeholder="Tap blocks to start building your answer."></div>
+        <div id="challenge-pool" class="block-pool"></div>
       </div>
-      <div id=\"challenge-feedback\" class=\"feedback\"></div>
-      <div id=\"challenge-expected\" class=\"feedback info\" hidden></div>
+      <div class="actions">
+        <button id="challenge-check" type="button" class="action primary">Check answer</button>
+        <button id="challenge-clear" type="button" class="action secondary">Clear</button>
+      </div>
+      <div class="feedback-stack">
+        <div id="challenge-feedback" class="feedback info"></div>
+        <div id="challenge-expected" class="feedback success" hidden></div>
+      </div>
     </section>
   </div>
 
